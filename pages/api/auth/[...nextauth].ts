@@ -1,5 +1,17 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    accessToken?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string;
+  }
+}
 
 export default NextAuth({
   providers: [
@@ -21,7 +33,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
+      session.accessToken = token.accessToken;
       return session;
     },
   },
