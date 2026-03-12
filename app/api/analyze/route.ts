@@ -34,7 +34,8 @@ ${emails}`,
     ],
   });
 
-  const text = message.content.find(b => b.type === "text")?.text || "";
+  const block = message.content.find(b => b.type === "text") as { type: "text"; text: string } | undefined;
+  const text = block?.text || "";
   const cleaned = text.replace(/```json|```/g, "").trim();
   return NextResponse.json(JSON.parse(cleaned));
 }
